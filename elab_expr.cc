@@ -2433,6 +2433,46 @@ NetExpr* PECallFunction::elaborate_expr_method_(Design*des, NetScope*scope,
 					  method_name, expr,
 					  expr_wid, tmp,
 					  parms_.size());
+#if 0 // to be sorted? =======
+      PExpr*arg1 = parms_[0];
+      PEIdent*arg1_ident = dynamic_cast<PEIdent*> (arg1);
+      ivl_assert(*this, arg1_ident);
+      NetNet*sig = scope->find_signal(arg1_ident);
+      ivl_assert(*this, sig);
+
+      ivl_discipline_t dis = sig->get_discipline();
+      ivl_assert(*this, dis);
+      ivl_assert(*this, nature == dis->potential() || nature == dis->flow());
+
+      NetNet*ref;
+      if (parms_.size() == 1) {
+	    ref = des->find_discipline_reference(dis, scope);
+      } else {
+	    PExpr*arg2 = parms_[1];
+	    PEIdent*arg2_ident = dynamic_cast<PEIdent*> (arg2);
+	    ivl_assert(*this, arg2_ident);
+	    ref = scope->find_signal(arg2_ident);
+      }
+
+      if ( (branch = find_existing_implicit_branch(sig, ref)) ) {
+	    if (debug_elaborate)
+		  cerr << get_fileline() << ": debug: "
+			<< "Re-use implicit branch from "
+			<< branch->get_fileline() << endl;
+      } else {
+	    branch = new NetBranch(dis);
+	    branch->set_line(*this);
+	    connect(branch->pin(0), sig->pin(0));
+	    connect(branch->pin(1), ref->pin(0));
+
+	    des->add_branch(branch);
+	    join_island(branch);
+
+	    if (debug_elaborate)
+		  cerr << get_fileline() << ": debug: "
+			<< "Create implicit branch." << endl;
+
+# endif // >>>>>>> 8237e07... Teach ivl to recognize 2-terminal access functions.
       }
 
       if (net->darray_type()) {
