@@ -83,6 +83,7 @@ class netclass_t;
 class netdarray_t;
 class netparray_t;
 class netqueue_t;
+class PEIdent;
 class netenum_t;
 class netstruct_t;
 class netvector_t;
@@ -999,6 +1000,7 @@ class NetScope : public Definitions, public Attrib {
       void add_signal(NetNet*);
       void rem_signal(NetNet*);
       NetNet* find_signal(perm_string name);
+      NetNet* find_signal(PEIdent*arg);
 
       netclass_t* find_class(perm_string name);
 

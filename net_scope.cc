@@ -29,8 +29,7 @@
 # include  <cstdlib>
 # include  <sstream>
 # include  "ivl_assert.h"
-
-class PExpr;
+# include  "PExpr.h"
 
 Definitions::Definitions()
 {
@@ -650,6 +649,16 @@ NetNet* NetScope::find_signal(perm_string key)
 }
 
 netclass_t*NetScope::find_class(perm_string name)
+{
+      const pform_name_t&path = arg->path();
+      ivl_assert(*arg, path.size()==1);
+      perm_string name = peek_tail_name(path);
+
+      NetNet*sig = find_signal(name);
+      return sig;
+}
+
+void NetScope::add_enumeration_set(netenum_t*enum_set)
 {
 	// Special case: The scope itself is the class that we are
 	// looking for. This may happen for example when elaborating
