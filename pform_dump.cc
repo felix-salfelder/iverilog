@@ -331,6 +331,13 @@ void PECastType::dump(ostream &out) const
       out << ")";
 }
 
+void PEDerivative::dump(ostream &out) const
+{
+      out << "ddt(";
+      if (argument_) out << *argument_;
+      out << ")";
+}
+
 void PEEvent::dump(ostream&out) const
 {
       switch (type_) {

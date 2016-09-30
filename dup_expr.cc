@@ -67,6 +67,11 @@ NetEBBits* NetEBBits::dup_expr() const
       return tmp;
 }
 
+NetEDerivative* NetEDerivative::dup_expr() const
+{
+      NetEDerivative*tmp = new NetEDerivative(argument_);
+}
+
 NetEBComp* NetEBComp::dup_expr() const
 {
       NetEBComp*tmp = new NetEBComp(op_, left_->dup_expr(), right_->dup_expr());
